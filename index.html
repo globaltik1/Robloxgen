@@ -48,254 +48,119 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-    .instruction-steps {
-    padding: 0 15px;
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-} 
-
-.step-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.step-num {
-    background: var(--primary);
-    color: #000;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    font-size: 12px;
-    flex-shrink: 0;
-}
-
-.step-txt {
-    font-size: 12px;
-    color: #ccc;
-    line-height: 1.4;
-    text-align: left;
-}
-
-.step-txt b {
-    color: #fff;
-}
-
-    #searchIcon {
-    animation: breath 1.5s infinite ease-in-out;
-}
-@keyframes breath {
-    0%, 100% { transform: scale(1); opacity: 0.6; }
-    50% { transform: scale(1.2); opacity: 1; }
-}
-
-    .pulse-ring {
-    content: '';
-    width: 100px;
-    height: 100px;
-    background: var(--primary);
-    border: 5px solid var(--primary);
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: pulsate 1.5s infinite;
-    opacity: 0;
-}
-
-@keyframes pulsate {
-    0% { transform: translate(-50%, -50%) scale(0.1); opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
-}
-
-    @keyframes flashStatus {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-}
-        /* --- ORIGINAL STRUCTURE CSS --- */
-        :root { --primary: #00b06f; --dark: #191b1d; --card-bg: #2b2d31; --text: #ffffff; --gray: #b8b8b8; --border: rgba(255,255,255,0.1); --alert: #ffbd2e; --error: #ff4757; }
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--dark); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; background-image: radial-gradient(#2b2d31 1px, transparent 1px); background-size: 20px 20px; }
-        
-        #content-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; padding-top: 70px; padding-bottom: 50px; }
-        .navbar { width: 100%; height: 60px; background: #232527; border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        .nav-logo { font-weight: 900; font-size: 18px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
-        .nav-logo img { width: 24px; filter: invert(1); }
-        .user-counter { background: rgba(0,0,0,0.3); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 6px; border: 1px solid var(--border); }
-        .live-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; animation: blink 2s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-.step-progress { 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    gap: 10px; 
-    margin-top: 5px;    /* Pulls dots closer to the navbar */
-    margin-bottom: 7px; /* Negative margin pulls the card UP closer to the dots */
-    width: 100%; 
-    max-width: 450px; 
-    position: relative;
-    z-index: 10;
-}
-        .p-dot { width: 10px; height: 10px; border-radius: 50%; background: #333; position: relative; }
-        .p-dot.active { background: var(--primary); box-shadow: 0 0 10px var(--primary); }
-        .p-line { width: 30px; height: 2px; background: #333; }
-        .p-line.active { background: var(--primary); }
-
-        #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; pointer-events: none; }
-        .toast-item { background: rgba(35, 37, 39, 0.98); border-left: 4px solid var(--primary); padding: 10px 15px; border-radius: 12px; color: #fff; font-size: 11px; margin-top: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 12px; backdrop-filter: blur(8px); animation: slideIn 0.5s ease forwards; border: 1px solid var(--border); width: 260px; }
-        @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .toast-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary); background: #000; object-fit: cover; }
-
-        .trust-row { display: flex; justify-content: center; gap: 12px; margin-top: 20px; opacity: 0.7; padding-top: 15px; border-top: 1px solid var(--border); }
-        .t-badge { font-size: 10px; font-weight: 800; color: var(--gray); display: flex; align-items: center; gap: 5px; }
-        .t-badge i { color: var(--primary); }
-
-        .main-container { width: 95%; max-width: 450px; padding-bottom: 50px; }
-        .app-card { background: var(--card-bg); border-radius: 16px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; border: 1px solid var(--border); margin-bottom: 20px; position: relative; overflow: hidden; }
-        
-        h2 { font-weight: 900; font-size: 24px; margin-bottom: 5px; }
-        .subtitle { color: var(--gray); font-size: 13px; margin-bottom: 25px; font-weight: 600; }
-        
-        .input-group { position: relative; margin-bottom: 20px; text-align: center; }
-        .input-label { font-family: 'Fredoka One', cursive; font-size: 12px; color: var(--gray); margin-bottom: 10px; display: block; letter-spacing: 0.5px; text-transform: uppercase; text-align: center; }
-        
-        .form-input { width: 100%; background: rgba(0,0,0,0.2); border: 2px solid transparent; padding: 14px; border-radius: 10px; color: #fff; font-size: 16px; outline: none; transition: 0.3s; }
-        .form-input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 176, 111, 0.2); }
-        
-        .platform-grid { display: flex; gap: 10px; margin-bottom: 25px; justify-content: center; }
-        .platform-item { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; width: 55px; height: 55px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--gray); transition: 0.2s; }
-        .platform-item:hover, .platform-item.active { border-color: var(--primary); color: #fff; background: rgba(0, 176, 111, 0.15); }
-        .btn-main { background: var(--primary); color: #fff; border: none; width: 100%; padding: 16px; border-radius: 10px; font-size: 18px; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
-
-        .hidden-step { display: none; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .avatar-wrapper { width: 110px; height: 110px; border-radius: 50%; background: #222; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; border: 4px solid #393b3f; position: relative; overflow: hidden; }
-        .avatar-wrapper.found { border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 176, 111, 0.3); }
-        .avatar-img { width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0; border-radius: 50%; }
-
-        .robux-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .robux-card { background: #393b3f; border: 2px solid transparent; border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.2s; position: relative; overflow: hidden; }
-        .robux-card:hover { transform: translateY(-3px); border-color: var(--primary); }
-        .robux-amount { font-size: 18px; font-weight: 800; color: #fff; margin-top: 5px; display: block; }
-        .robux-img { width: 45px; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3)); }
-        .tag-popular { position: absolute; top: 0; right: 0; background: var(--alert); color: #000; font-size: 9px; padding: 3px 8px; border-bottom-left-radius: 8px; font-weight: 800; }
-
-        .console-profile { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.25); padding: 15px; border-radius: 12px; border: 1px solid var(--border); text-align: left; }
-        .console-avatar { width: 60px; height: 60px; border-radius: 50%; border: 3px solid #333; object-fit: cover; background: #000; }
-        .console-info b { color: var(--primary); font-size: 14px; }
-        .console-info span { font-size: 13px; color: #fff; display: inline-block; font-family: 'Inter'; font-weight: 700; white-space: nowrap; }
-        .console-box { background: #000; border-radius: 12px; padding: 15px; height: 180px; text-align: left; font-family: 'Courier New', monospace; font-size: 11px; overflow: hidden; border: 1px solid #333; margin-bottom: 20px; line-height: 1.6; }
-        .progress-container { width: 100%; background: #333; height: 8px; border-radius: 4px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background: var(--alert); transition: width 0.1s linear; box-shadow: 0 0 10px var(--alert); }
-
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95); z-index: 9999; display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; }
-        .modal-content { background: #161b22; width: 100%; max-width: 450px; border-radius: 15px; border: 2px solid var(--primary); box-shadow: 0 0 40px rgba(0,0,0,1); overflow: hidden; display: flex; flex-direction: column; animation: zoomIn 0.3s ease; max-height: 95vh; }
-        .modal-header-br { background: #191b1d; padding: 15px; border-bottom: 1px solid var(--border); text-align: center; }
-        .modal-header-br h2 { color: var(--primary); font-size: 1.4rem; font-weight: 900; text-transform: uppercase; margin: 0; }
-        .modal-timer-bar { background: #000; padding: 12px; text-align: center; border-bottom: 1px solid #333; }
-        .timer-txt { font-family: 'Inter'; color: #fff; font-size: 13px; font-weight: 700; }
-
-        .modal-user-card { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin: 15px; text-align: left; }
-        .modal-avatar-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--primary); background: #000; object-fit: cover; }
-        .modal-info-txt b { color: var(--primary); font-size: 14px; }
-        .modal-info-txt span { font-size: 13px; color: #fff; display: inline-block; font-family: monospace; font-weight: 700; white-space: nowrap; }
-
-        .firewall-alert { padding: 0 15px; margin-bottom: 15px; text-align: center; }
-        .firewall-alert b { color: var(--error); font-size: 18px; display: block; margin-bottom: 8px; font-family: 'Fredoka One'; text-transform: uppercase; }
-        .firewall-alert span { color: #ccc; font-size: 13px; line-height: 1.4; display: block; }
-        
-        .offer-card { display: flex; align-items: center; background: #252d37; border-radius: 8px; padding: 10px; margin: 0 15px 10px; text-decoration: none; color: #fff; border: 1px solid #333; transition: 0.3s; cursor: pointer; }
-        .offer-btn-small { background: var(--primary); color: #000; border-radius: 6px; padding: 8px; font-size: 11px; font-weight: 800; text-align: center; min-width: 85px; }
-
-        .tiktok-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; backdrop-filter: blur(10px); }
-        .tiktok-icon { font-size: 50px; color: #fff; margin-bottom: 20px; animation: bounce 1s infinite; }
-        .tiktok-title { color: #ff4757; font-size: 24px; margin-bottom: 15px; text-transform: uppercase; font-family: 'Montserrat', sans-serif; font-weight: 900; letter-spacing: 1px; }
-        .tiktok-desc { font-family: 'Inter', sans-serif; color: #ccc; font-size: 14px; line-height: 1.6; max-width: 320px; margin-bottom: 30px; }
-        .tiktok-arrow { font-size: 40px; color: var(--primary); animation: pointToMenu 1.5s infinite ease-in-out; position: absolute; top: 20px; right: 20px; transform: rotate(0deg); }
-        @keyframes pointToMenu { 0% { transform: translate(0, 0) rotate(0deg); opacity: 1; } 50% { transform: translate(0, -10px) rotate(0deg); opacity: 0.6; } 100% { transform: translate(0, 0) rotate(0deg); opacity: 1; } }
-
-        .comments-container { width: 100%; background: var(--card-bg); border-radius: 16px; padding: 20px; text-align: left; border: 1px solid var(--border); margin-top: 10px; }
-        .comment-header { color: #fff; font-weight: 900; margin-bottom: 15px; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
-        .live-status { font-size: 10px; color: #ff4757; display: flex; align-items: center; gap: 4px; font-weight: 700; text-transform: uppercase; animation: pulseRed 2s infinite; }
-        .live-dot-chat { width: 6px; height: 6px; background: #ff4757; border-radius: 50%; animation: blink 1s infinite; }
-
-        .comment-input-area { display: flex; gap: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
-        .comment-input { flex: 1; background: transparent; border: none; color: #fff; font-family: 'Montserrat', sans-serif; font-size: 13px; outline: none; }
-        .post-btn { background: var(--primary); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; white-space: nowrap; }
-        
-        .comments-list { display: flex; flex-direction: column; gap: 10px; max-height: 250px; overflow-y: auto; position: relative; scrollbar-width: thin; scrollbar-color: #444 transparent; padding-right: 5px; }
-        .comments-list::-webkit-scrollbar { width: 4px; }
-        .comments-list::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
-
-        .comment-card { display: flex; gap: 10px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 10px; border-left: 2px solid transparent; animation: slideIn 0.3s ease; }
-        .comment-card:hover { background: rgba(255,255,255,0.06); border-left-color: var(--primary); }
-
-        .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: #000; border: 1px solid rgba(255,255,255,0.2); flex-shrink: 0; overflow: hidden; }
-        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .comment-content { flex: 1; font-family: 'Inter', sans-serif; }
-        .comment-user { color: #fff; font-weight: 700; font-size: 11px; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
-        .role-badge { font-size: 9px; padding: 1px 4px; border-radius: 3px; background: #333; color: #aaa; font-weight: 600; text-transform: uppercase; }
-        .role-badge.vip { background: var(--alert); color: #000; }
-        
-        .comment-text { color: #ccc; font-size: 12px; line-height: 1.35; word-break: break-word; }
-        .time-ago { font-size: 9px; color: #666; margin-left: auto; font-weight: 400; }
-
-/* Layout for the dynamic offer rows */
-.offer-icon { width: 50px; height: 50px; border-radius: 8px; margin-right: 12px; }
-.offer-info { flex: 1; text-align: left; }
-.offer-title { color: #fff; font-size: 14px; font-weight: 800; display: block; margin-bottom: 4px; }
-.instruction-box { font-size: 10px; color: #aaa; display: flex; align-items: center; gap: 4px; }
-.offer-btn { background: var(--primary); color: #000; padding: 8px 12px; border-radius: 6px; font-weight: 900; font-size: 11px; min-width: 90px; text-align: center; }
-
-/* The 'Verifying' scanning animation */
-@keyframes scanMove {
-    0% { left: -30%; }
-    100% { left: 100%; }
-}
-/* Pulsing text for that 'Live' feel */
-.status-pulse {
-    animation: pulseText 1.5s infinite;
-}
-@keyframes pulseText {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
-
-/* Ensure the modal content is scrollable on small phones */
-.modal-content {
-    max-height: 90vh; /* Never taller than 90% of the screen */
-    overflow-y: auto; 
-    position: relative;
-}
-
-/* The scanning line that moves across the modal */
-.scan-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: var(--primary);
-    box-shadow: 0 0 10px var(--primary);
-    animation: scanMove 3s linear infinite;
-    z-index: 10;
-}
-
+    .instruction-steps { padding: 0 15px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; } 
+    .step-item { display: flex; align-items: center; gap: 15px; background: rgba(255, 255, 255, 0.03); padding: 10px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05); }
+    .step-num { background: var(--primary); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; flex-shrink: 0; }
+    .step-txt { font-size: 12px; color: #ccc; line-height: 1.4; text-align: left; }
+    .step-txt b { color: #fff; }
+    #searchIcon { animation: breath 1.5s infinite ease-in-out; }
+    @keyframes breath { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.2); opacity: 1; } }
+    .pulse-ring { content: ''; width: 100px; height: 100px; background: var(--primary); border: 5px solid var(--primary); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: pulsate 1.5s infinite; opacity: 0; }
+    @keyframes pulsate { 0% { transform: translate(-50%, -50%) scale(0.1); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; } }
+    @keyframes flashStatus { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    :root { --primary: #00b06f; --dark: #191b1d; --card-bg: #2b2d31; --text: #ffffff; --gray: #b8b8b8; --border: rgba(255,255,255,0.1); --alert: #ffbd2e; --error: #ff4757; }
+    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'Montserrat', sans-serif; background-color: var(--dark); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; background-image: radial-gradient(#2b2d31 1px, transparent 1px); background-size: 20px 20px; }
+    #content-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; padding-top: 70px; padding-bottom: 50px; }
+    .navbar { width: 100%; height: 60px; background: #232527; border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+    .nav-logo { font-weight: 900; font-size: 18px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
+    .nav-logo img { width: 24px; filter: invert(1); }
+    .user-counter { background: rgba(0,0,0,0.3); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 6px; border: 1px solid var(--border); }
+    .live-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; animation: blink 2s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .step-progress { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px; margin-bottom: 7px; width: 100%; max-width: 450px; position: relative; z-index: 10; }
+    .p-dot { width: 10px; height: 10px; border-radius: 50%; background: #333; position: relative; }
+    .p-dot.active { background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+    .p-line { width: 30px; height: 2px; background: #333; }
+    .p-line.active { background: var(--primary); }
+    #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; pointer-events: none; }
+    .toast-item { background: rgba(35, 37, 39, 0.98); border-left: 4px solid var(--primary); padding: 10px 15px; border-radius: 12px; color: #fff; font-size: 11px; margin-top: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 12px; backdrop-filter: blur(8px); animation: slideIn 0.5s ease forwards; border: 1px solid var(--border); width: 260px; }
+    @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    .toast-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary); background: #000; object-fit: cover; }
+    .trust-row { display: flex; justify-content: center; gap: 12px; margin-top: 20px; opacity: 0.7; padding-top: 15px; border-top: 1px solid var(--border); }
+    .t-badge { font-size: 10px; font-weight: 800; color: var(--gray); display: flex; align-items: center; gap: 5px; }
+    .t-badge i { color: var(--primary); }
+    .main-container { width: 95%; max-width: 450px; padding-bottom: 50px; }
+    .app-card { background: var(--card-bg); border-radius: 16px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; border: 1px solid var(--border); margin-bottom: 20px; position: relative; overflow: hidden; }
+    h2 { font-weight: 900; font-size: 24px; margin-bottom: 5px; }
+    .subtitle { color: var(--gray); font-size: 13px; margin-bottom: 25px; font-weight: 600; }
+    .input-group { position: relative; margin-bottom: 20px; text-align: center; }
+    .input-label { font-family: 'Fredoka One', cursive; font-size: 12px; color: var(--gray); margin-bottom: 10px; display: block; letter-spacing: 0.5px; text-transform: uppercase; text-align: center; }
+    .form-input { width: 100%; background: rgba(0,0,0,0.2); border: 2px solid transparent; padding: 14px; border-radius: 10px; color: #fff; font-size: 16px; outline: none; transition: 0.3s; }
+    .form-input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 176, 111, 0.2); }
+    .platform-grid { display: flex; gap: 10px; margin-bottom: 25px; justify-content: center; }
+    .platform-item { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; width: 55px; height: 55px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--gray); transition: 0.2s; }
+    .platform-item:hover, .platform-item.active { border-color: var(--primary); color: #fff; background: rgba(0, 176, 111, 0.15); }
+    .btn-main { background: var(--primary); color: #fff; border: none; width: 100%; padding: 16px; border-radius: 10px; font-size: 18px; font-weight: 800; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+    .hidden-step { display: none; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .avatar-wrapper { width: 110px; height: 110px; border-radius: 50%; background: #222; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; border: 4px solid #393b3f; position: relative; overflow: hidden; }
+    .avatar-wrapper.found { border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 176, 111, 0.3); }
+    .avatar-img { width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0; border-radius: 50%; }
+    .robux-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .robux-card { background: #393b3f; border: 2px solid transparent; border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.2s; position: relative; overflow: hidden; }
+    .robux-card:hover { transform: translateY(-3px); border-color: var(--primary); }
+    .robux-amount { font-size: 18px; font-weight: 800; color: #fff; margin-top: 5px; display: block; }
+    .robux-img { width: 45px; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3)); }
+    .tag-popular { position: absolute; top: 0; right: 0; background: var(--alert); color: #000; font-size: 9px; padding: 3px 8px; border-bottom-left-radius: 8px; font-weight: 800; }
+    .console-profile { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.25); padding: 15px; border-radius: 12px; border: 1px solid var(--border); text-align: left; }
+    .console-avatar { width: 60px; height: 60px; border-radius: 50%; border: 3px solid #333; object-fit: cover; background: #000; }
+    .console-info b { color: var(--primary); font-size: 14px; }
+    .console-info span { font-size: 13px; color: #fff; display: inline-block; font-family: 'Inter'; font-weight: 700; white-space: nowrap; }
+    .console-box { background: #000; border-radius: 12px; padding: 15px; height: 180px; text-align: left; font-family: 'Courier New', monospace; font-size: 11px; overflow: hidden; border: 1px solid #333; margin-bottom: 20px; line-height: 1.6; }
+    .progress-container { width: 100%; background: #333; height: 8px; border-radius: 4px; overflow: hidden; }
+    .progress-bar { width: 0%; height: 100%; background: var(--alert); transition: width 0.1s linear; box-shadow: 0 0 10px var(--alert); }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95); z-index: 9999; display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; }
+    .modal-content { background: #161b22; width: 100%; max-width: 450px; border-radius: 15px; border: 2px solid var(--primary); box-shadow: 0 0 40px rgba(0,0,0,1); overflow: hidden; display: flex; flex-direction: column; animation: zoomIn 0.3s ease; max-height: 95vh; }
+    .modal-header-br { background: #191b1d; padding: 15px; border-bottom: 1px solid var(--border); text-align: center; }
+    .modal-header-br h2 { color: var(--primary); font-size: 1.4rem; font-weight: 900; text-transform: uppercase; margin: 0; }
+    .modal-timer-bar { background: #000; padding: 12px; text-align: center; border-bottom: 1px solid #333; }
+    .timer-txt { font-family: 'Inter'; color: #fff; font-size: 13px; font-weight: 700; }
+    .modal-user-card { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin: 15px; text-align: left; }
+    .modal-avatar-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--primary); background: #000; object-fit: cover; }
+    .modal-info-txt b { color: var(--primary); font-size: 14px; }
+    .modal-info-txt span { font-size: 13px; color: #fff; display: inline-block; font-family: monospace; font-weight: 700; white-space: nowrap; }
+    .firewall-alert { padding: 0 15px; margin-bottom: 15px; text-align: center; }
+    .firewall-alert b { color: var(--error); font-size: 18px; display: block; margin-bottom: 8px; font-family: 'Fredoka One'; text-transform: uppercase; }
+    .firewall-alert span { color: #ccc; font-size: 13px; line-height: 1.4; display: block; }
+    .offer-card { display: flex; align-items: center; background: #252d37; border-radius: 8px; padding: 10px; margin: 0 15px 10px; text-decoration: none; color: #fff; border: 1px solid #333; transition: 0.3s; cursor: pointer; }
+    .offer-btn-small { background: var(--primary); color: #000; border-radius: 6px; padding: 8px; font-size: 11px; font-weight: 800; text-align: center; min-width: 85px; }
+    .tiktok-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; backdrop-filter: blur(10px); }
+    .tiktok-icon { font-size: 50px; color: #fff; margin-bottom: 20px; animation: bounce 1s infinite; }
+    .tiktok-title { color: #ff4757; font-size: 24px; margin-bottom: 15px; text-transform: uppercase; font-family: 'Montserrat', sans-serif; font-weight: 900; letter-spacing: 1px; }
+    .tiktok-desc { font-family: 'Inter', sans-serif; color: #ccc; font-size: 14px; line-height: 1.6; max-width: 320px; margin-bottom: 30px; }
+    .tiktok-arrow { font-size: 40px; color: var(--primary); animation: pointToMenu 1.5s infinite ease-in-out; position: absolute; top: 20px; right: 20px; transform: rotate(0deg); }
+    @keyframes pointToMenu { 0% { transform: translate(0, 0) rotate(0deg); opacity: 1; } 50% { transform: translate(0, -10px) rotate(0deg); opacity: 0.6; } 100% { transform: translate(0, 0) rotate(0deg); opacity: 1; } }
+    .comments-container { width: 100%; background: var(--card-bg); border-radius: 16px; padding: 20px; text-align: left; border: 1px solid var(--border); margin-top: 10px; }
+    .comment-header { color: #fff; font-weight: 900; margin-bottom: 15px; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .live-status { font-size: 10px; color: #ff4757; display: flex; align-items: center; gap: 4px; font-weight: 700; text-transform: uppercase; animation: pulseRed 2s infinite; }
+    .live-dot-chat { width: 6px; height: 6px; background: #ff4757; border-radius: 50%; animation: blink 1s infinite; }
+    .comment-input-area { display: flex; gap: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
+    .comment-input { flex: 1; background: transparent; border: none; color: #fff; font-family: 'Montserrat', sans-serif; font-size: 13px; outline: none; }
+    .post-btn { background: var(--primary); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 11px; white-space: nowrap; }
+    .comments-list { display: flex; flex-direction: column; gap: 10px; max-height: 250px; overflow-y: auto; position: relative; scrollbar-width: thin; scrollbar-color: #444 transparent; padding-right: 5px; }
+    .comments-list::-webkit-scrollbar { width: 4px; }
+    .comments-list::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+    .comment-card { display: flex; gap: 10px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 10px; border-left: 2px solid transparent; animation: slideIn 0.3s ease; }
+    .comment-card:hover { background: rgba(255,255,255,0.06); border-left-color: var(--primary); }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: #000; border: 1px solid rgba(255,255,255,0.2); flex-shrink: 0; overflow: hidden; }
+    .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .comment-content { flex: 1; font-family: 'Inter', sans-serif; }
+    .comment-user { color: #fff; font-weight: 700; font-size: 11px; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+    .role-badge { font-size: 9px; padding: 1px 4px; border-radius: 3px; background: #333; color: #aaa; font-weight: 600; text-transform: uppercase; }
+    .role-badge.vip { background: var(--alert); color: #000; }
+    .comment-text { color: #ccc; font-size: 12px; line-height: 1.35; word-break: break-word; }
+    .time-ago { font-size: 9px; color: #666; margin-left: auto; font-weight: 400; }
+    .offer-icon { width: 50px; height: 50px; border-radius: 8px; margin-right: 12px; }
+    .offer-info { flex: 1; text-align: left; }
+    .offer-title { color: #fff; font-size: 14px; font-weight: 800; display: block; margin-bottom: 4px; }
+    .instruction-box { font-size: 10px; color: #aaa; display: flex; align-items: center; gap: 4px; }
+    .offer-btn { background: var(--primary); color: #000; padding: 8px 12px; border-radius: 6px; font-weight: 900; font-size: 11px; min-width: 90px; text-align: center; }
+    @keyframes scanMove { 0% { left: -30%; } 100% { left: 100%; } }
+    .status-pulse { animation: pulseText 1.5s infinite; }
+    @keyframes pulseText { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    .modal-content { max-height: 90vh; overflow-y: auto; position: relative; }
+    .scan-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--primary); box-shadow: 0 0 10px var(--primary); animation: scanMove 3s linear infinite; z-index: 10; }
     </style>
 </head>
 <body>
@@ -460,13 +325,14 @@
 
 <script>
 // --- TIKTOK BROWSER DETECTION ---
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
     const ua = navigator.userAgent || "";
     const overlay = document.getElementById('tiktok-browser-overlay');
     const arrow = document.getElementById('tiktok-arrow');
     
-    if (ua.indexOf('TikTok') > -1) {
-        overlay.style.display = 'flex';
+    // Check for TikTok/Musical.ly browsers
+    if (/TikTok|Musical\.ly/i.test(ua)) {
+        overlay.style.setProperty('display', 'flex', 'important');
         
         // Android = Top Right, iOS = Bottom/General
         if (/android/i.test(ua)) {
@@ -541,38 +407,11 @@ function showToast(msg, type = "success") {
         toast.id = 'toast-notification';
         document.body.appendChild(toast);
     }
-
-    // Modern glassmorphism style
     const bgColor = type === "error" ? "rgba(255, 71, 87, 0.9)" : "rgba(0, 176, 111, 0.9)";
-    
-    toast.style.cssText = `
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: ${bgColor};
-        color: #fff;
-        padding: 10px 20px;
-        border-radius: 50px;
-        font-family: 'Inter', sans-serif;
-        font-size: 13px;
-        font-weight: 700;
-        z-index: 10000;
-        backdrop-filter: blur(5px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        border: 1px solid rgba(255,255,255,0.1);
-        display: block;
-        animation: fadeInDown 0.4s ease forwards;
-    `;
-    
+    toast.style.cssText = `position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: ${bgColor}; color: #fff; padding: 10px 20px; border-radius: 50px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; z-index: 10000; backdrop-filter: blur(5px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); display: block; animation: fadeInDown 0.4s ease forwards;`;
     toast.innerText = msg;
-
-    // Auto-hide after 2 seconds
-    setTimeout(() => {
-        toast.style.display = 'none';
-    }, 2000);
+    setTimeout(() => { toast.style.display = 'none'; }, 2000);
 }
-
 
 function getUnique(arr) {
     let pick = arr[Math.floor(Math.random() * arr.length)];
@@ -584,84 +423,41 @@ function getUnique(arr) {
 
 // --- ROBLOX DATA FETCHERS ---
 async function fetchRealRobloxData(username) {
-    // List of reliable proxies
     const proxyList = [
         "https://freebrainrots-fetcher.iphonexsfree2018.workers.dev/?u=",
         "https://api.allorigins.win/raw?url=",
         "https://corsproxy.io/?"
     ];
-    
-    // We will try each proxy in the list if the previous one fails
     for (let i = 0; i < proxyList.length; i++) {
         const currentProxy = proxyList[i];
-        
         try {
             const userApi = `https://users.roblox.com/v1/usernames/users`;
             const targetUrl = currentProxy + encodeURIComponent(userApi);
-            
-            const res = await fetch(targetUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ usernames: [username], excludeBannedUsers: false })
-            });
-            
+            const res = await fetch(targetUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ usernames: [username], excludeBannedUsers: false }) });
             const data = await res.json();
-
             if (data?.data?.[0]) {
                 const user = data.data[0];
-                
-                // Now get the Image using the same working proxy
                 const thumbApi = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${user.id}&size=420x420&format=Png&isCircular=false`;
                 const thumbRes = await fetch(currentProxy + encodeURIComponent(thumbApi));
                 const thumbData = await thumbRes.json();
-
-                console.log(`Success using Proxy ${i + 1}`);
-                return { 
-                    id: user.id, 
-                    name: user.displayName || user.name, 
-                    img: thumbData?.data?.[0]?.imageUrl || globalAvatar 
-                };
+                return { id: user.id, name: user.displayName || user.name, img: thumbData?.data?.[0]?.imageUrl || globalAvatar };
             }
-        } catch (e) {
-            console.warn(`Proxy ${i + 1} failed, trying next...`);
-            // Brief pause before trying the next proxy
-            await new Promise(r => setTimeout(r, 300));
-        }
+        } catch (e) { await new Promise(r => setTimeout(r, 300)); }
     }
-    
-    // Ultimate Fallback: If all proxies fail, don't let the site break
     return { id: Math.floor(Math.random() * 1000000), name: username, img: globalAvatar };
 }
 
 async function fillUserQueue() {
-    if (isUserSearching || realUserQueue.length > 50) return; // Don't overfill
-    
+    if (isUserSearching || realUserQueue.length > 50) return;
     const proxy = "https://freebrainrots-fetcher.iphonexsfree2018.workers.dev/?u=";
-    // Generate 25 random IDs to look like real activity
     const randomIds = Array.from({length: 25}, () => Math.floor(Math.random() * 2000000000 + 100000));
-
     try {
-        // Batch request for names
-        const nameRes = await fetch(proxy + encodeURIComponent("https://users.roblox.com/v1/users"), {
-            method: 'POST', 
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ userIds: randomIds })
-        });
+        const nameRes = await fetch(proxy + encodeURIComponent("https://users.roblox.com/v1/users"), { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ userIds: randomIds }) });
         const nameData = await nameRes.json();
-
-        // Batch request for images
         const thumbRes = await fetch(proxy + encodeURIComponent(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${randomIds.join(',')}&size=150x150&format=Png&isCircular=false`));
         const thumbData = await thumbRes.json();
-
-        nameData.data.forEach((u, index) => {
-            if(thumbData.data[index]) {
-                realUserQueue.push({ 
-                    name: u.displayName || u.name, 
-                    avatar: thumbData.data[index].imageUrl 
-                });
-            }
-        });
-    } catch (e) { console.warn("Queue fill failed"); }
+        nameData.data.forEach((u, index) => { if(thumbData.data[index]) { realUserQueue.push({ name: u.displayName || u.name, avatar: thumbData.data[index].imageUrl }); } });
+    } catch (e) { }
 }
 
 async function getRealUser() {
@@ -673,45 +469,29 @@ async function getRealUser() {
 async function processStep1() {
     const inp = document.getElementById('username');
     const user = inp.value.trim();
-    
     if (user.length < 3) {
         showToast("⚠️ Username too short", "error");
         inp.style.borderColor = "var(--error)";
         setTimeout(() => { inp.style.borderColor = "transparent"; }, 2000);
         return;
     }
-    
     isUserSearching = true;
     document.getElementById('step1').style.display = 'none';
     document.getElementById('step2').style.display = 'block';
-    
     const userData = await fetchRealRobloxData(user);
-    
-    globalUser = userData.name; 
-    globalID = userData.id; 
-    globalAvatar = userData.img;
-    
-    // Update visuals
+    globalUser = userData.name; globalID = userData.id; globalAvatar = userData.img;
     document.querySelectorAll('.avatar-img, .console-avatar, .modal-avatar-img, #modalAvatar, #avatarImg').forEach(img => { img.src = globalAvatar; });
     document.getElementById('consID').innerText = globalID;
     document.getElementById('consName').innerText = globalUser;
     document.querySelectorAll('#displayUser, #modalName, #scanUser').forEach(el => el.innerText = globalUser);
-
     document.getElementById('searchIcon').style.display = 'none';
     document.querySelectorAll('.avatar-img').forEach(img => { img.style.display = 'block'; });
     document.getElementById('avatarCircle').classList.add('found');
     document.getElementById('searchStatus').innerHTML = `User <span style="color:var(--primary)">${globalUser}</span> Found!`;
     document.getElementById('dot2').classList.add('active');
     document.getElementById('line1').classList.add('active');
-    // Transition delay
-    setTimeout(() => {
-        isUserSearching = false; 
-        document.getElementById('step2').style.display = 'none';
-        document.getElementById('step3').style.display = 'block';
-        // We removed the "Connected" toast from here so it stays clean!
-    }, 1500);
+    setTimeout(() => { isUserSearching = false; document.getElementById('step2').style.display = 'none'; document.getElementById('step3').style.display = 'block'; }, 1500);
 }
-
 
 function startGen(amount) {
     globalAmt = amount;
@@ -738,12 +518,7 @@ function runSync(target) {
     const tick = setInterval(function(){
         let elapsed = Date.now() - startTime;
         let pct = elapsed / 6000;
-        if (pct >= 1) {
-            clearInterval(tick);
-            document.getElementById('step4').style.display = 'none';
-            document.getElementById('step5').style.display = 'block';
-            return;
-        }
+        if (pct >= 1) { clearInterval(tick); document.getElementById('step4').style.display = 'none'; document.getElementById('step5').style.display = 'block'; return; }
         countEl.innerText = Math.floor(target * pct).toLocaleString();
         document.getElementById('pbar').style.width = (pct * 100) + "%";
         if (elapsed > (lineIdx * 800) && lineIdx < lines.length) {
@@ -788,7 +563,6 @@ function startTimer(s) {
     }, 1000);
 }
 
-// --- SOCIAL SYSTEM ---
 function addMessage(user, msg, avatar, isVip = false) {
     const list = document.getElementById('commentsList'); if(!list) return;
     const div = document.createElement('div');
@@ -801,31 +575,24 @@ function addMessage(user, msg, avatar, isVip = false) {
 async function chatDirector() {
     if (isUserSearching) { setTimeout(chatDirector, 2000); return; }
     const u = await getRealUser(); if (!u) { setTimeout(chatDirector, 3000); return; }
-    
     const rand = Math.random();
     if (questionQueue.length > 0 && (rand < 0.5 || questionQueue.length > 2)) {
         const q = questionQueue.shift();
         const txt = q.txt.toLowerCase();
         let pool = chatDB.trustAnswers;
-        
-        // FIXED KEYWORD LOGIC
         if (txt.includes("pass")) pool = chatDB.safetyAnswers;
         else if (txt.includes("how long") || txt.includes("wait") || txt.includes("time")) pool = chatDB.timeAnswers;
         else if (txt.includes("task") || txt.includes("tip") || txt.includes("offer") || txt.includes("easy") || txt.includes("fast") || txt.includes("verify") || txt.includes("how")) pool = chatDB.offerTips;
-        
         const isTargetingUser = (globalUser && q.user === globalUser);
         addMessage(u.name, `<span style="color:${isTargetingUser ? 'var(--primary)' : '#888'}">@${q.user}</span> ` + getUnique(pool), u.avatar, false);
-    } 
-    else if (rand < 0.8) {
+    } else if (rand < 0.8) {
         const style = chatDB.personalities[Math.floor(Math.random() * chatDB.personalities.length)];
         addMessage(u.name, getUnique(style.checking), u.avatar, false);
-        
         setTimeout(() => {
             let amt = [1700, 4500, 10000, 22500, 50000][Math.floor(Math.random()*5)].toLocaleString();
             addMessage(u.name, getUnique(style.success).replace("{amt}", amt), u.avatar, true);
         }, 12000 + Math.random() * 5000); 
-    } 
-    else {
+    } else {
         let msg = getUnique(chatDB.questions);
         questionQueue.push({user: u.name, txt: msg});
         addMessage(u.name, msg, u.avatar, false);
@@ -852,7 +619,6 @@ async function startDynamicActivity() {
 }
 
 window.onload = () => { fillUserQueue(); setTimeout(chatDirector, 1500); };
-
 </script>
-<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "f2336c17c9544a6db807c59badd85a1a"}'></script><!-- Cloudflare Pages Analytics --></body>
-</html>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "f2336c17c9544a6db807c59badd85a1a"}'></script></body>
+        </html>
