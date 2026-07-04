@@ -392,30 +392,28 @@
         const isIOS = /iphone|ipad|ipod/i.test(ua);
         const desc = overlay.querySelector('.tiktok-desc');
 
-        // === Arrow Positioning ===
+        // Arrow positioning
         if (arrow) {
             if (isIOS) {
-                // iOS → Share button is at the bottom
                 arrow.style.top = "auto";
                 arrow.style.bottom = "85px";
                 arrow.style.right = "25px";
-                arrow.style.transform = "rotate(180deg)";   // Pointing up
-                arrow.style.fontSize = "38px";
+                arrow.style.transform = "rotate(180deg)";
             } else {
-                // Android → Three dots at top right
                 arrow.style.top = "25px";
                 arrow.style.bottom = "auto";
                 arrow.style.right = "25px";
                 arrow.style.transform = "rotate(-45deg)";
-                arrow.style.fontSize = "38px";
             }
+            arrow.style.fontSize = "38px";
         }
 
-        // === Message ===
+        // Message
         if (desc) {
             if (isIOS) {
                 desc.innerHTML = `You're using an in-app browser.<br><br>
-                Tap the <strong>share button</strong> (□ with ↑) at the bottom → choose <strong>"Open in Safari"</strong>.`;
+                Tap the <strong>share button</strong> (□ with ↑) at the bottom,<br>
+                then choose <strong>"Open in Safari"</strong>.`;
             } else {
                 desc.innerHTML = `You're using an in-app browser.<br><br>
                 Tap the <strong>three dots ⋯</strong> (top right) → choose <strong>"Open in browser"</strong>.`;
@@ -424,6 +422,7 @@
     }
 })();
 </script>
+
     <script>
 // --- MASTER STATE ---
 let isUserSearching = false; 
