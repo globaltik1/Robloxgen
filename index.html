@@ -449,7 +449,39 @@
     </div>
 </div>
 </div> </div>
+
+    <!-- TIKTOK DETECTION OVERLAY -->
+    <div id="tiktok-browser-overlay" class="tiktok-overlay">
+        <div class="tiktok-icon">⚠️</div>
+        <div class="tiktok-title">TikTok Browser Detected</div>
+        <p class="tiktok-desc">TikTok's in-built browser doesn't support the full security features required for this site. To proceed, please tap the three dots or the "Open in browser" button and select <b>"Open in System Browser."</b></p>
+        <div id="tiktok-arrow" class="tiktok-arrow">⬇️</div>
+    </div>
+
 <script>
+// --- TIKTOK BROWSER DETECTION ---
+window.addEventListener('DOMContentLoaded', () => {
+    const ua = navigator.userAgent || "";
+    const overlay = document.getElementById('tiktok-browser-overlay');
+    const arrow = document.getElementById('tiktok-arrow');
+    
+    if (ua.indexOf('TikTok') > -1) {
+        overlay.style.display = 'flex';
+        
+        // Android = Top Right, iOS = Bottom/General
+        if (/android/i.test(ua)) {
+            arrow.style.top = "20px";
+            arrow.style.right = "20px";
+            arrow.style.transform = "rotate(-45deg)";
+        } else {
+            arrow.style.top = "auto";
+            arrow.style.bottom = "80px";
+            arrow.style.right = "20px";
+            arrow.style.transform = "rotate(180deg)";
+        }
+    }
+});
+
 // --- MASTER STATE ---
 let isUserSearching = false; 
 let activityStarted = false;
@@ -822,5 +854,5 @@ async function startDynamicActivity() {
 window.onload = () => { fillUserQueue(); setTimeout(chatDirector, 1500); };
 
 </script>
-</body>
-        </html>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "f2336c17c9544a6db807c59badd85a1a"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>
